@@ -14,17 +14,34 @@
      <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <!-- font awesome cdn -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 <body class="font-geist">
     <!-- header -->
-     <header>
+     <header class="container mx-auto">
+            <nav class="navbar bg-base-100 shadow-sm">
+  <div class="flex-1 md:flex gap-3 items-center">
+    <img class="w-[50px]" src="./assets/github-logo.png" alt="">
+    <h2 class="text-xl md:text-2xl font-bold">GitHub Issues Tracker</h2>
+  </div>
 
+  <div class="md:flex items-center gap-3">
+  <!-- Search Input -->
+  <div class="relative">
+    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <input type="text" placeholder="Search issues..." class="font-semibold border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-64 focus:outline-none focus:ring-1 focus:ring-black">
+  </div>
+  <button class="mt-2 md:mt-0 btn btn-primary text-lg"><i class="fa-solid fa-plus"></i> New Issue</button>
+</div>
+
+</nav>
      </header>
 
      <!-- main -->
-    <main>
-        <h2>This is Home</h2>
+    <main class="container w-11/12 mx-auto border">
+        <!-- button section -->
     </main>
 
     <!-- footer -->
