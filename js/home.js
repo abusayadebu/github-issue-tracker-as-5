@@ -17,6 +17,9 @@ const modalDate = document.getElementById("modalDate")
 const modalLabels = document.getElementById("modalLabels")
 const modalStatus = document.getElementById("modalStatus")
 
+// catch searchInput
+const searchInput = document.getElementById("searchInput")
+
 
 // catch buttons
 const allFilterBtn = document.getElementById("allFilterBtn")
@@ -43,7 +46,6 @@ function activeButton(btn){
   // add the class to the clicked btn
   btn.classList.add("btn-primary")
 }
-
 
 // loadIssues
 async function loadIssues(){
@@ -182,6 +184,21 @@ closedFilterBtn.addEventListener("click", ()=> {
   totalIssuesCount.innerText = `${closedIssues.length} Issues`;
 })
 
+// search input event listener
+searchInput.addEventListener("input", ()=>{
+  const searchText = searchInput.value.toLowerCase()
+  // filter the allIssues by searched text
+  const searchFilteredIssues = allIssues.filter(issue=>
+    issue.title.toLowerCase().includes(searchText) || 
+    issue.description.toLowerCase().includes(searchText) ||
+    issue.author.toLowerCase().includes(searchText)
+  )
+  // show search filtered ISSues
+  displayIssues(searchFilteredIssues);
+
+  // // update issue count
+  totalIssuesCount.innerText = `${searchFilteredIssues.length} Issues`;
+})
 
 
 loadIssues()
