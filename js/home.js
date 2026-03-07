@@ -8,6 +8,16 @@ let totalIssuesCount = document.getElementById("totalIssuesCount")
 // catch loader 
 const loader = document.getElementById("loader")
 
+// catch the modal details
+const issueDetailsModal = document.getElementById("issueDetailsModal")
+const modalTitle = document.getElementById("modalTitle")
+const modalDescription = document.getElementById("modalDescription")
+const modalAuthor = document.getElementById("modalAuthor")
+const modalDate = document.getElementById("modalDate")
+const modalLabels = document.getElementById("modalLabels")
+const modalStatus = document.getElementById("modalStatus")
+
+
 // catch buttons
 const allFilterBtn = document.getElementById("allFilterBtn")
 const openFilterBtn = document.getElementById("openFilterBtn")
@@ -55,7 +65,7 @@ async function displayIssues(issues){
         // console.log(issue);
         const card = document.createElement("div")
         card.innerHTML = `
-             <div class="card bg-base-100 shadow-sm border-t-4 ${issue.status === 'open' ? 'border-green-400' : 'border-purple-400'} flex flex-col h-full">
+             <div class="card bg-base-100 shadow-sm border-t-4 ${issue.status === 'open' ? 'border-green-400' : 'border-purple-400'} flex flex-col h-full cursor-pointer">
   <div class="card-body">
     <div class="flex items-center justify-between">
         <img class="w-[30px]" 
@@ -90,6 +100,37 @@ async function displayIssues(issues){
   </div>
 </div>
         `
+
+        // add event listener on the card
+        card.addEventListener("click", ()=>{
+          modalTitle.innerText = issue.title;
+          modalStatus.innerText = issue.status;
+
+          // change color based on status
+          const isOpen = issue.status === "open";
+          modalStatus.classList.add(isOpen ? "bg-green-500" : "bg-red-500")
+          modalStatus.classList.remove(isOpen ? "bg-red-500" : "bg-green-500")
+          modalDescription.innerText = issue.description;
+
+          modalAuthor.innerText = "By " + issue.author;
+          modalDate.innerText = new Date(issue.createdAt).toLocaleString()
+
+          // labels
+          modalLabels.innerHTML = `
+        ${issue.labels.map(label => `
+            <span class="px-3 py-1 rounded-full text-sm font-medium uppercase ${
+                label === 'bug' ? 'bg-red-200 text-red-800' :
+                label === 'help wanted' ? 'bg-yellow-200 text-yellow-800' :
+                label === 'enhancement' ? 'bg-green-200 text-green-800' :
+                label === 'good first issue' ? 'bg-purple-200 text-purple-800' :
+                label === 'documentation' ? 'bg-blue-200 text-blue-800' :
+                'bg-gray-200 text-gray-800'
+            }">${label}</span>
+        `).join('')}
+    `
+
+    issueDetailsModal.showModal()
+})
 
         issueCardContainer.appendChild(card)
     })
@@ -140,7 +181,6 @@ closedFilterBtn.addEventListener("click", ()=> {
    // total issue count update
   totalIssuesCount.innerText = `${closedIssues.length} Issues`;
 })
-
 
 
 
