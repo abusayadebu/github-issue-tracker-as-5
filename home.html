@@ -91,14 +91,21 @@
 <dialog id="issueDetailsModal" class="modal">
   <div class="modal-box">
     <h3 id="modalTitle" class="font-bold text-2xl mb-2"></h3>
-    <span id="modalStatus" class="bg-green-500 text-white px-2 font-medium rounded-lg"></span>
-    <!-- labels -->
-    <div id="modalLabels" class="flex flex-wrap gap-2 mt-4"></div>
-
-    <p id="modalDescription" class="py-4 text-[#64748B] text-lg"></p>
-     <div class="flex items-center gap-4 text-sm text-gray-500">
+    <!-- author -->
+    <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
+      <span id="modalStatus" class="bg-green-500 text-white px-2 font-medium rounded-lg mt-1"></span>
       <p id="modalAuthor" class=""></p>
       <p id="modalDate"></p>
+    </div>
+    
+    <!-- labels -->
+    <div id="modalLabels" class="flex flex-wrap gap-2 mt-4"></div>
+    <p id="modalDescription" class="py-4 text-[#64748B] text-lg"></p>
+
+    <!-- priority and assigne -->
+     <div class="flex items-center justify-between gap-4 text-sm bg-gray-100 p-4 rounded-lg mt-4">
+      <h4 id="modalAssignee" class="text-lg text[#64748B] font-semibold"></h4>
+      <span id="modalPriority" class="text-lg text[#64748B] font-semibold p-2 rounded-lg"></span>
     </div>
 
     <div class="modal-action">

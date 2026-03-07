@@ -16,6 +16,8 @@ const modalAuthor = document.getElementById("modalAuthor")
 const modalDate = document.getElementById("modalDate")
 const modalLabels = document.getElementById("modalLabels")
 const modalStatus = document.getElementById("modalStatus")
+const modalAssignee = document.getElementById("modalAssignee")
+const modalPriority = document.getElementById("modalPriority")
 
 // catch searchInput
 const searchInput = document.getElementById("searchInput")
@@ -58,6 +60,62 @@ async function loadIssues(){
     hideLoader();
     // console.log(allIssues, "allissues");
     displayIssues(allIssues)
+}
+
+// loadIssueDetails
+async function loadIssueDetails(id){
+  showLoader()
+
+  const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+  const data = await res.json()
+
+  const issue = data.data
+
+  modalTitle.innerText = issue.title
+  modalDescription.innerText = issue.description
+  modalAuthor.innerText = "By " + issue.author
+  modalDate.innerText = new Date(issue.createdAt).toLocaleString()
+  modalAssignee.innerText = issue.assignee ? `Assignee: 
+  ${issue.assignee}` : "Assignee: Not Assigned";
+  modalPriority.innerText = `Priority: ${issue.priority}`;
+
+  // remove colr
+  modalPriority.classList.remove("bg-red-500","bg-yellow-400","bg-gray-400")
+
+    // add color based on 
+  if(issue.priority === "high"){
+    modalPriority.classList.add("bg-red-500")
+  }
+  else if(issue.priority === "medium"){
+    modalPriority.classList.add("bg-yellow-400")
+  }
+  else{
+    modalPriority.classList.add("bg-gray-400")
+  }
+
+  // status
+  modalStatus.innerText = issue.status
+  const isOpen = issue.status === "open"
+  modalStatus.classList.add(isOpen ? "bg-green-500" : "bg-red-500")
+  modalStatus.classList.remove(isOpen ? "bg-red-500" : "bg-green-500")
+
+  // labels
+  modalLabels.innerHTML = `
+    ${issue.labels.map(label => `
+      <span class="px-3 py-1 rounded-full text-sm font-medium uppercase ${
+        label === 'bug' ? 'bg-red-200 text-red-800' :
+        label === 'help wanted' ? 'bg-yellow-200 text-yellow-800' :
+        label === 'enhancement' ? 'bg-green-200 text-green-800' :
+        label === 'good first issue' ? 'bg-purple-200 text-purple-800' :
+        label === 'documentation' ? 'bg-blue-200 text-blue-800' :
+        'bg-gray-200 text-gray-800'
+      }">${label}</span>
+    `).join('')}
+  `
+
+  hideLoader()
+
+  issueDetailsModal.showModal()
 }
 
 // displayIssues
@@ -105,33 +163,9 @@ async function displayIssues(issues){
 
         // add event listener on the card
         card.addEventListener("click", ()=>{
-          modalTitle.innerText = issue.title;
-          modalStatus.innerText = issue.status;
-
-          // change color based on status
-          const isOpen = issue.status === "open";
-          modalStatus.classList.add(isOpen ? "bg-green-500" : "bg-red-500")
-          modalStatus.classList.remove(isOpen ? "bg-red-500" : "bg-green-500")
-          modalDescription.innerText = issue.description;
-
-          modalAuthor.innerText = "By " + issue.author;
-          modalDate.innerText = new Date(issue.createdAt).toLocaleString()
-
-          // labels
-          modalLabels.innerHTML = `
-        ${issue.labels.map(label => `
-            <span class="px-3 py-1 rounded-full text-sm font-medium uppercase ${
-                label === 'bug' ? 'bg-red-200 text-red-800' :
-                label === 'help wanted' ? 'bg-yellow-200 text-yellow-800' :
-                label === 'enhancement' ? 'bg-green-200 text-green-800' :
-                label === 'good first issue' ? 'bg-purple-200 text-purple-800' :
-                label === 'documentation' ? 'bg-blue-200 text-blue-800' :
-                'bg-gray-200 text-gray-800'
-            }">${label}</span>
-        `).join('')}
-    `
-
-    issueDetailsModal.showModal()
+         
+          loadIssueDetails(issue.id)
+          
 })
 
         issueCardContainer.appendChild(card)
