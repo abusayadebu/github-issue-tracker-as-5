@@ -1,15 +1,49 @@
+let allIssues = [];
+
 // catch the issueCardContainer
 const issueCardContainer = document.getElementById("issueCardContainer")
+// catch the totalIssuesCount
+let totalIssuesCount = document.getElementById("totalIssuesCount")
+
+// catch loader 
+const loader = document.getElementById("loader")
+
+// catch buttons
+const allFilterBtn = document.getElementById("allFilterBtn")
+const openFilterBtn = document.getElementById("openFilterBtn")
+const closedFilterBtn = document.getElementById("closedFilterBtn")
+
+
+// showLoader
+function showLoader(){
+ loader.classList.remove("hidden")
+}
+
+// hideLoader
+function hideLoader(){
+ loader.classList.add("hidden")
+}
+
+
+
+
 
 // loadIssues
 async function loadIssues(){
+  // show the loader
+    showLoader()
     const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
     const data = await res.json()
-    displayIssues(data.data)
+    allIssues = data.data;
+    // hideLoader()
+    hideLoader();
+    // console.log(allIssues, "allissues");
+    displayIssues(allIssues)
 }
 
 // displayIssues
 async function displayIssues(issues){
+  issueCardContainer.innerHTML = ""; // clear previous cards
     issues.forEach(issue =>{
         // console.log(issue);
         const card = document.createElement("div")
@@ -53,6 +87,31 @@ async function displayIssues(issues){
         issueCardContainer.appendChild(card)
     })
 }
+
+// open filter btn
+openFilterBtn.addEventListener("click", () => {
+  openFilterBtn.classList.add("btn-primary")
+  allFilterBtn.classList.remove("btn-primary")
+  closedFilterBtn.classList.remove("btn-primary")
+
+  // show loader 
+  showLoader()
+  
+  // // empty the issueCardContainer
+  // issueCardContainer.innerHTML = " ";
+
+  // filter the issues from the all issues and show only the open issues
+  const openIssues = allIssues.filter(issue => issue.status === "open");
+  displayIssues(openIssues)
+  // hide loader
+  hideLoader()
+  // console.log(openIssues);
+  // totalIssues count update
+  totalIssuesCount.innerText = `${openIssues.length} Issues`;
+})
+
+
+
 
 
 loadIssues()
