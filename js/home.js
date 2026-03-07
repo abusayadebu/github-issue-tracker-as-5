@@ -24,8 +24,15 @@ function hideLoader(){
  loader.classList.add("hidden")
 }
 
+// button activeness
+function activeButton(btn){
+  openFilterBtn.classList.remove("btn-primary")
+  allFilterBtn.classList.remove("btn-primary")
+  closedFilterBtn.classList.remove("btn-primary")
 
-
+  // add the class to the clicked btn
+  btn.classList.add("btn-primary")
+}
 
 
 // loadIssues
@@ -88,12 +95,24 @@ async function displayIssues(issues){
     })
 }
 
+// all filter btn 
+allFilterBtn.addEventListener("click", ()=>{
+  activeButton(allFilterBtn)
+  // showLoader
+  showLoader();
+  // show the all issues
+  displayIssues(allIssues)
+  // hide
+  hideLoader()
+
+  // total issue count update
+  totalIssuesCount.innerText = `${allIssues.length} Issues`;
+
+})
+
 // open filter btn
 openFilterBtn.addEventListener("click", () => {
-  openFilterBtn.classList.add("btn-primary")
-  allFilterBtn.classList.remove("btn-primary")
-  closedFilterBtn.classList.remove("btn-primary")
-
+    activeButton(openFilterBtn);
   // show loader 
   showLoader()
   
@@ -110,6 +129,17 @@ openFilterBtn.addEventListener("click", () => {
   totalIssuesCount.innerText = `${openIssues.length} Issues`;
 })
 
+// closed filter btn
+closedFilterBtn.addEventListener("click", ()=> {
+  activeButton(closedFilterBtn)
+  // filter the issues from the all issues and show only the closed issues
+  const closedIssues = allIssues.filter(issue => issue.status === "closed");
+  // console.log(closedIssues);
+  displayIssues(closedIssues)
+
+   // total issue count update
+  totalIssuesCount.innerText = `${closedIssues.length} Issues`;
+})
 
 
 
