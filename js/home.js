@@ -73,13 +73,13 @@ async function loadIssueDetails(id){
 
   modalTitle.innerText = issue.title
   modalDescription.innerText = issue.description
-  modalAuthor.innerText = "By " + issue.author
+  modalAuthor.innerText = "Opened by " + issue.author
   modalDate.innerText = new Date(issue.createdAt).toLocaleString()
   modalAssignee.innerText = issue.assignee ? `Assignee: 
   ${issue.assignee}` : "Assignee: Not Assigned";
   modalPriority.innerText = `Priority: ${issue.priority}`;
 
-  // remove colr
+  // remove color
   modalPriority.classList.remove("bg-red-500","bg-yellow-400","bg-gray-400")
 
     // add color based on 
@@ -123,6 +123,10 @@ async function displayIssues(issues){
   issueCardContainer.innerHTML = ""; // clear previous cards
     issues.forEach(issue =>{
         // console.log(issue);
+        // foermate date
+        const formattedDate = new Date(issue.createdAt).toLocaleDateString('en-US');
+
+        // card create
         const card = document.createElement("div")
         card.innerHTML = `
              <div class="card bg-base-100 shadow-sm border-t-4 ${issue.status === 'open' ? 'border-green-400' : 'border-purple-400'} flex flex-col h-full cursor-pointer">
@@ -155,7 +159,7 @@ async function displayIssues(issues){
     <!-- footer -->
     <div class="">
         <p class="text-[#64748B] text-lg">#${issue.id} by <span>${issue.author}</span></p>
-        <p class="text-[#64748B] text-lg">${issue.createdAt}</p>
+        <p class="text-[#64748B] text-lg">${formattedDate}</p>
     </div>
   </div>
 </div>
